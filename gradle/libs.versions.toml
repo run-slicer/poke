@@ -1,0 +1,12 @@
+[versions]
+picocli = "4.7.6"
+
+[libraries]
+jspecify = { group = "org.jspecify", name = "jspecify", version = "0.3.0" }
+picocli = { group = "info.picocli", name = "picocli", version.ref = "picocli" }
+picocli-codegen = { group = "info.picocli", name = "picocli-codegen", version.ref = "picocli" }
+proguard = { group = "com.github.run-slicer", name = "proguard", version = "82ace0a065" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version = "8.3.0" }
+blossom = { id = "net.kyori.blossom", version = "2.1.0" }

@@ -1,0 +1,5 @@
+package run.slicer.poke.cli;
+
+class BuildParameters {
+    static final String VERSION = "{{ version }}";
+}
