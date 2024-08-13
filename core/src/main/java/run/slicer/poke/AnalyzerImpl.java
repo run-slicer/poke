@@ -1,6 +1,7 @@
 package run.slicer.poke;
 
-import proguard.*;
+import proguard.AppView;
+import proguard.Configuration;
 import proguard.classfile.ClassPool;
 import proguard.classfile.ProgramClass;
 import proguard.classfile.io.ProgramClassReader;
@@ -15,15 +16,23 @@ import proguard.preverify.Preverifier;
 import proguard.preverify.SubroutineInliner;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 record AnalyzerImpl(Configuration config) implements Analyzer {
     @Override
-    public byte[] analyze(byte[] b) {
-        final var clazz = new ProgramClass();
-        clazz.accept(new ProgramClassReader(new DataInputStream(new ByteArrayInputStream(b))));
+    public List<? extends Entry> analyze(Iterable<? extends Entry> entries) {
+        final Map<Entry, ProgramClass> classes = new HashMap<>();
+        for (final Entry entry : entries) {
+            final var clazz = new ProgramClass();
+            classes.put(entry, clazz);
 
-        final var view = new AppView(new ClassPool(clazz), new ClassPool());
+            clazz.accept(new ProgramClassReader(new DataInputStream(new ByteArrayInputStream(entry.data()))));
+        }
+
+        final var pool = new ClassPool(classes.values());
+        final var view = new AppView(pool, new ClassPool());
 
         final boolean willOptimize = config.optimize && config.optimizationPasses > 0;
         if (config.preverify || willOptimize) {
@@ -37,7 +46,7 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
             new PrimitiveArrayConstantIntroducer().execute(view);
             this.optimize(view);
             new LineNumberLinearizer().execute(view);
-            clazz.accept(new PrimitiveArrayConstantReplacer());
+            pool.classesAccept(new PrimitiveArrayConstantReplacer());
         }
         if (config.preverify) {
             new Preverifier(config).execute(view);
@@ -47,10 +56,15 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
             new LineNumberTrimmer().execute(view);
         }
 
-        final var output = new ByteArrayOutputStream();
-        clazz.accept(new ProgramClassWriter(new DataOutputStream(output)));
+        return classes.entrySet()
+                .stream()
+                .map(e -> {
+                    final var output = new ByteArrayOutputStream();
+                    e.getValue().accept(new ProgramClassWriter(new DataOutputStream(output)));
 
-        return output.toByteArray();
+                    return e.getKey().withData(output.toByteArray());
+                })
+                .toList();
     }
 
     private void optimize(AppView view) {

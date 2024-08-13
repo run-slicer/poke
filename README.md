@@ -15,8 +15,8 @@ For use of the actual CLI, grab a build from GitHub Packages and run it with the
 Usage: poke [-hV] [--[no-]optimize] [--[no-]verify] [-p=<passes>] <input>
             <output>
 A Java library for performing bytecode normalization and generic deobfuscation.
-      <input>             The class file to be analyzed.
-      <output>            The analyzed class file destination.
+      <input>             The class/JAR file to be analyzed.
+      <output>            The analyzed class/JAR file destination.
   -h, --help              Show this help message and exit.
       --[no-]optimize     Performs optimizations.
   -p, --passes=<passes>   The amount of optimization passes.

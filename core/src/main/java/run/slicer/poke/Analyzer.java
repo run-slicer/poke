@@ -1,11 +1,21 @@
 package run.slicer.poke;
 
+import java.util.List;
+
 public interface Analyzer {
     static Builder builder() {
         return new AnalyzerImpl.Builder();
     }
 
-    byte[] analyze(byte[] b);
+    List<? extends Entry> analyze(Iterable<? extends Entry> entries);
+
+    default byte[] analyze(byte[] b) {
+        return this.analyze(Entry.of(null, b)).getFirst().data();
+    }
+
+    default List<? extends Entry> analyze(Entry... entries) {
+        return this.analyze(List.of(entries));
+    }
 
     interface Builder {
         Builder passes(int passes);
