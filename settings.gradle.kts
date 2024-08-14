@@ -17,4 +17,4 @@ fun includePrefixed(vararg modules: String) {
     }
 }
 
-includePrefixed("core", "cli")
+includePrefixed("core", "cli", "js")
