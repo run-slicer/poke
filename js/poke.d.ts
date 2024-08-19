@@ -5,5 +5,5 @@ declare module "@run-slicer/poke" {
         verify?: boolean;
     }
 
-    export function analyze(data: Uint8Array, config?: Config): Uint8Array;
+    export function analyze(data: Uint8Array, config?: Config): Promise<Uint8Array>;
 }
