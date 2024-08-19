@@ -38,6 +38,6 @@ public class Main {
         });
     }
 
-    @JSBody(params = {"data"}, script = "return data;")
+    @JSBody(params = {"data"}, script = "return new Uint8Array(data);")
     private static native Uint8Array wrapByteArray(@JSByRef byte[] data);
 }
