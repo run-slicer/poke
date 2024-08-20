@@ -32,6 +32,12 @@ public interface Analyzer {
             return this.optimize(true);
         }
 
+        Builder inline(boolean inline);
+
+        default Builder inline() {
+            return this.inline(true);
+        }
+
         Analyzer build();
     }
 }

@@ -6,7 +6,7 @@ teavm = "0.10.0"
 jspecify = { group = "org.jspecify", name = "jspecify", version = "0.3.0" }
 picocli = { group = "info.picocli", name = "picocli", version.ref = "picocli" }
 picocli-codegen = { group = "info.picocli", name = "picocli-codegen", version.ref = "picocli" }
-proguard = { group = "com.github.run-slicer", name = "proguard", version = "82ace0a065" }
+proguard = { group = "com.github.run-slicer", name = "proguard", version = "1d630e03ef" }
 teavm-core = { group = "org.teavm", name = "teavm-core", version.ref = "teavm" }
 
 [plugins]

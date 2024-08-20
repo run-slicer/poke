@@ -31,6 +31,7 @@ public class Main {
                         .passes(options.passes())
                         .optimize(options.optimize())
                         .verify(options.verify())
+                        .inline(options.inline())
                         .build();
 
                 resolve.accept(wrapByteArray(analyzer.analyze(data)));

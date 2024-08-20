@@ -12,4 +12,7 @@ public interface Options extends JSObject {
 
     @JSBody(script = "return Boolean(this.verify);")
     boolean verify();
+
+    @JSBody(script = "return Boolean(this.inline);")
+    boolean inline();
 }

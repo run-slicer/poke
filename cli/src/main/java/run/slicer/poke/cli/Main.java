@@ -39,12 +39,16 @@ public final class Main implements Callable<Integer> {
     @CommandLine.Option(names = "--verify", description = "Performs preemptive verification and correction.", negatable = true)
     private boolean verify;
 
+    @CommandLine.Option(names = "--inline", description = "Performs method inlining.", negatable = true)
+    private boolean inline;
+
     @Override
     public Integer call() throws Exception {
         final Analyzer analyzer = Analyzer.builder()
                 .passes(this.passes)
                 .optimize(this.optimize)
                 .verify(this.verify)
+                .inline(this.inline)
                 .build();
 
         boolean isClass = false;

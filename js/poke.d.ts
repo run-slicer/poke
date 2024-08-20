@@ -3,6 +3,7 @@ declare module "@run-slicer/poke" {
         passes?: number;
         optimize?: boolean;
         verify?: boolean;
+        inline?: boolean;
     }
 
     export function analyze(data: Uint8Array, config?: Config): Promise<Uint8Array>;

@@ -12,19 +12,20 @@ For use as a library, see [how the CLI uses it](./cli/src/main/java/run/slicer/p
 For use of the actual CLI, grab a build from GitHub Packages and run it with the `--help` option, you should see something like this:
 
 ```
-Usage: poke [-hV] [--[no-]optimize] [--[no-]verify] [-p=<passes>] <input>
-            <output>
+Usage: poke [-hV] [--[no-]inline] [--[no-]optimize] [--[no-]verify]
+            [-p=<passes>] <input> <output>
 A Java library for performing bytecode normalization and generic deobfuscation.
       <input>             The class/JAR file to be analyzed.
       <output>            The analyzed class/JAR file destination.
   -h, --help              Show this help message and exit.
+      --[no-]inline       Performs method inlining.
       --[no-]optimize     Performs optimizations.
   -p, --passes=<passes>   The amount of optimization passes.
   -V, --version           Print version information and exit.
       --[no-]verify       Performs preemptive verification and correction.
 ```
 
-In most use cases, you'll want to use both `--optimize` and `--verify` with a decent amount of passes (5-10).
+In most use cases, you'll want to use `--optimize`, `--verify` and `--inline` with a decent amount of passes (5-10).
 
 ## Licensing
 

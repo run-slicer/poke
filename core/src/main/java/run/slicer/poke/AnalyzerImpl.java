@@ -9,11 +9,11 @@ import proguard.classfile.io.ProgramClassWriter;
 import proguard.classfile.pass.PrimitiveArrayConstantIntroducer;
 import proguard.classfile.util.PrimitiveArrayConstantReplacer;
 import proguard.optimize.LineNumberTrimmer;
-import proguard.optimize.Optimizer;
 import proguard.optimize.peephole.LineNumberLinearizer;
 import proguard.preverify.PreverificationClearer;
 import proguard.preverify.Preverifier;
 import proguard.preverify.SubroutineInliner;
+import run.slicer.poke.proguard.Optimizer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -90,6 +90,7 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
         private int passes = 1;
         private boolean verify = false;
         private boolean optimize = false;
+        private boolean inline = false;
 
         Builder() {
         }
@@ -117,22 +118,32 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
         }
 
         @Override
+        public Builder inline(boolean inline) {
+            this.inline = inline;
+            return this;
+        }
+
+        @Override
         public Analyzer build() {
             final var config = new Configuration();
 
             config.optimize = this.optimize;
             config.preverify = this.verify;
-            config.keep = List.of();
             config.optimizationPasses = this.passes;
 
             final List<String> optimizations = new ArrayList<>(List.of(
+                    "field/*",
+                    "method/generalization/*",
+                    "method/specialization/*",
                     "method/propagation/*",
-                    "method/inlining/*",
                     "code/merging",
                     "code/removal/*",
                     "code/allocation/*"
             ));
 
+            if (this.inline) {
+                optimizations.add("method/inlining/*");
+            }
             if (PEEPHOLE) {
                 optimizations.add("code/simplification/variable");
                 optimizations.add("code/simplification/arithmetic");
