@@ -80,13 +80,6 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
     }
 
     static final class Builder implements Analyzer.Builder {
-        private static final boolean PEEPHOLE = Boolean.parseBoolean(
-                System.getProperty("run.slicer.poke.peephole", "true")
-        );
-        private static final boolean EVALUATION = Boolean.parseBoolean(
-                System.getProperty("run.slicer.poke.evaluation", "true")
-        );
-
         private int passes = 1;
         private boolean verify = false;
         private boolean optimize = false;
@@ -136,26 +129,11 @@ record AnalyzerImpl(Configuration config) implements Analyzer {
                     "method/generalization/*",
                     "method/specialization/*",
                     "method/propagation/*",
-                    "code/merging",
-                    "code/removal/*",
-                    "code/allocation/*"
+                    "code/*"
             ));
 
             if (this.inline) {
                 optimizations.add("method/inlining/*");
-            }
-            if (PEEPHOLE) {
-                optimizations.add("code/simplification/variable");
-                optimizations.add("code/simplification/arithmetic");
-                optimizations.add("code/simplification/cast");
-                optimizations.add("code/simplification/field");
-                optimizations.add("code/simplification/branch");
-                optimizations.add("code/simplification/object");
-                optimizations.add("code/simplification/string");
-                optimizations.add("code/simplification/math");
-            }
-            if (EVALUATION) {
-                optimizations.add("code/simplification/advanced");
             }
             config.optimizations = optimizations;
 

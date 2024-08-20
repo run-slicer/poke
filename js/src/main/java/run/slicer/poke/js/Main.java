@@ -14,9 +14,6 @@ public class Main {
         // the proper fix would be to stop proguard-core from casting threads to its own objects,
         // but I really can't be bothered to stub that all out
         System.setProperty("parallel.threads", "1");
-
-        // FIXME: InstructionSequencesReplacer breaks TeaVM
-        System.setProperty("run.slicer.poke.peephole", "false");
     }
 
     @JSExport
