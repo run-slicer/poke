@@ -24,14 +24,18 @@ public class Main {
     private static JSPromise<Uint8Array> analyze0(byte[] data, Options options) {
         return new JSPromise<>((resolve, reject) -> {
             new Thread(() -> {
-                final Analyzer analyzer = Analyzer.builder()
-                        .passes(options.passes())
-                        .optimize(options.optimize())
-                        .verify(options.verify())
-                        .inline(options.inline())
-                        .build();
+                try {
+                    final Analyzer analyzer = Analyzer.builder()
+                            .passes(options.passes())
+                            .optimize(options.optimize())
+                            .verify(options.verify())
+                            .inline(options.inline())
+                            .build();
 
-                resolve.accept(wrapByteArray(analyzer.analyze(data)));
+                    resolve.accept(wrapByteArray(analyzer.analyze(data)));
+                } catch (Throwable e) {
+                    reject.accept(e);
+                }
             }).start();
         });
     }

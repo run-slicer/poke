@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "run.slicer"
-version = "1.0.4"
+version = "1.0.5"
 description = "A Java library for performing bytecode normalization and generic deobfuscation."
 
 repositories {
